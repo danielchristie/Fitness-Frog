@@ -41,29 +41,29 @@ namespace fitness_frog {
             Console.WriteLine("\n\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
             k = Console.ReadKey(true);
 
-            // Pass the next keypress to see if 
-            WaitForKey(k.Key);
-
+            // Call method and pass keypress to parse the user's intentions 
+            WaitForKey(k);
+            
         }
 
-        static void WaitForKey(ConsoleKey k) {
+        static void WaitForKey(ConsoleKeyInfo k) {
             // Call this and pass in the next keypress event to see if Q or Spacebar key was pressed
             // Repeat these processes until the user indicates a valid response
-            while (k != ConsoleKey.Spacebar && k != ConsoleKey.Q) {
+            while (k.Key != ConsoleKey.Spacebar && k.Key != ConsoleKey.Q) {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
-                Console.WriteLine("\n<" + k + "> is an invalid selection. ");
+                Console.WriteLine("\n<" + k.Key + "> is an invalid selection. ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
+                k = Console.ReadKey(true);
             }
 
-            while (k == ConsoleKey.Spacebar || k == ConsoleKey.Q) {
-                if (k == ConsoleKey.Spacebar) {
-                    Console.WriteLine("Pressed Spacebar!");
-                    Console.ReadLine();
+            while (k.Key == ConsoleKey.Spacebar || k.Key == ConsoleKey.Q) {
+                if (k.Key == ConsoleKey.Spacebar) {
+                    return; // do nothing, return back so program can continue on.
                 }
-                if (k == ConsoleKey.Q) {
-                    Environment.Exit(0);
+                if (k.Key == ConsoleKey.Q) {
+                    Environment.Exit(0); // exit the program
                 }
             }
         }

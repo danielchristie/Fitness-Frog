@@ -10,7 +10,6 @@ namespace fitness_frog {
             // initialize the variables
             int newMin; // total minutes for the current set
             int runningTotal = 0; // total minutes for the entire current session
-            ConsoleKeyInfo k; // convert OS system keypress to variable for future comparison
 
             // Loop until the user enters a valid number of minutes greater than the initial 0 minutes
             while (runningTotal <= 0) {
@@ -37,16 +36,15 @@ namespace fitness_frog {
             Console.ForegroundColor = ConsoleColor.White;
 
 
-            // Query the user and receive their keypress
-            Console.WriteLine("\n\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
-            k = Console.ReadKey(true);
-
-            // Call method and pass keypress to parse the user's intentions 
-            WaitForKey(k);
+            // Query the user, call method, and parse the user's intentions 
+            WaitForKey();
             
         }
 
-        static void WaitForKey(ConsoleKeyInfo k) {
+        static void WaitForKey() {
+            Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
+            ConsoleKeyInfo k; // convert OS system keypress to variable for future comparison
+            k = Console.ReadKey(true);
             // Call this and pass in the next keypress event to see if Q or Spacebar key was pressed
             // Repeat these processes until the user indicates a valid response
             while (k.Key != ConsoleKey.Spacebar && k.Key != ConsoleKey.Q) {
@@ -54,7 +52,6 @@ namespace fitness_frog {
                 Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
                 Console.WriteLine("\n<" + k.Key + "> is an invalid selection. ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
                 k = Console.ReadKey(true);
             }
 

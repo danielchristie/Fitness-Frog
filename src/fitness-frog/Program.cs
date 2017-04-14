@@ -41,23 +41,22 @@ namespace fitness_frog {
             Console.WriteLine("\n\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
             k = Console.ReadKey(true);
 
-
-            // Repeat these processes until the user indicates a valid response
-            while (k.Key != ConsoleKey.Spacebar && k.Key != ConsoleKey.Q) {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
-                Console.WriteLine("\n<" + k.Key + "> is an invalid selection. ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
-                k = Console.ReadKey(true);
-            }
-
+            // Pass the next keypress to see if 
             WaitForKey(k.Key);
 
         }
 
         static void WaitForKey(ConsoleKey k) {
             // Call this and pass in the next keypress event to see if Q or Spacebar key was pressed
+            // Repeat these processes until the user indicates a valid response
+            while (k != ConsoleKey.Spacebar && k != ConsoleKey.Q) {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
+                Console.WriteLine("\n<" + k + "> is an invalid selection. ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
+            }
+
             while (k == ConsoleKey.Spacebar || k == ConsoleKey.Q) {
                 if (k == ConsoleKey.Spacebar) {
                     Console.WriteLine("Pressed Spacebar!");

@@ -8,60 +8,79 @@ namespace fitness_frog {
     class Program {
         static void Main(string[] args) {
             // initialize the variables
-            int newMin; // total minutes for the current set
             int runningTotal = 0; // total minutes for the entire current session
+            ConsoleKeyInfo k;  // System key press object
+            bool run = true;
 
-            // Loop until the user enters a valid number of minutes greater than the initial 0 minutes
-            while (runningTotal <= 0) {
-                // Prompt the user for minutes exercised
-                Console.Write("How minutes you have exercied? ");
-                var response = Console.ReadLine();
-                try {
-                    Int32.TryParse(response, out newMin);  // Safely convert user's response to int
-                    runningTotal = (newMin + runningTotal); // Add minutes exercised to running total
-                    //Console.WriteLine("you entered: " + newMin + " and the type: " + newMin.GetType());
-                }
-                catch {
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
-                    Console.WriteLine("Something has gone terribly wrong, press the <Enter> key to exit program...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-            }
+            // Mian program Loop
+            while (run) {
+                // Keypress Loop
+                do {
+                    // Display the running total to the screen
+                    showTotal(runningTotal);
+                    displayOptions();
+                    k = Console.ReadKey();
 
-            // Display the running total to the screen
+                    if (k.Key == ConsoleKey.A) {
+                        getMin();
+                        string response = Console.ReadLine();
+                        runningTotal = addMin(response, runningTotal);
+                        continue;
+                    }
+                    if (k.Key == ConsoleKey.Q) {
+                        run = false;
+                        Environment.Exit(0); // exit the program
+                    }
+                    if (k.Key != ConsoleKey.A && k.Key != ConsoleKey.Q) {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
+                        Console.WriteLine("\n<" + k.Key + "> is an invalid selection. ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Press any key to continue...");
+                        Console.Read();
+                        Console.Read();
+                    }
+                } while (k.Key != ConsoleKey.A && k.Key != ConsoleKey.Q);
+            } // end of Main program's do/while loop
+        } // end Void Main
+
+        static void displayOptions() {
+            // Display the options to user
+            Console.WriteLine("\n\nPress the <A> key to add additional minutes: \nPress the <Q> key to exit program: ");
+        }
+
+       static void showTotal(int runningTotal) {
             Console.Clear();
+            // Display the running total to the screen
+            Console.WriteLine();
+            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("You have been exercising a total of " + runningTotal + " minutes.");
             Console.ForegroundColor = ConsoleColor.White;
-
-
-            // Query the user, call method, and parse the user's intentions 
-            WaitForKey();
-            
         }
 
-        static void WaitForKey() {
-            Console.WriteLine("\nPress the <SPACEBAR> key to continue: \nPress the <Q> key to exit program: ");
-            ConsoleKeyInfo k; // convert OS system keypress to variable for future comparison
-            k = Console.ReadKey(true);
-            // Call this and pass in the next keypress event to see if Q or Spacebar key was pressed
-            // Repeat these processes until the user indicates a valid response
-            while (k.Key != ConsoleKey.Spacebar && k.Key != ConsoleKey.Q) {
+        static void getMin() {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine();
+            // Prompt the user for minutes exercised
+            Console.Write("Please type in the additional minutes that you have exercied: ");
+        }
+
+        static int addMin(string response, int runningTotal) {
+            int newMin = 0; // new set of minutes
+            try {
+                Int32.TryParse(response, out newMin);  // Safely convert user's response to int
+                runningTotal = (newMin + runningTotal); // Add minutes exercised to running total
+                showTotal(runningTotal);
+                return runningTotal;
+            }
+            catch {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
-                Console.WriteLine("\n<" + k.Key + "> is an invalid selection. ");
+                Console.WriteLine("Something has gone terribly wrong, press the <Enter> key to exit program...");
                 Console.ForegroundColor = ConsoleColor.White;
-                k = Console.ReadKey(true);
-            }
-
-            while (k.Key == ConsoleKey.Spacebar || k.Key == ConsoleKey.Q) {
-                if (k.Key == ConsoleKey.Spacebar) {
-                    return; // do nothing, return back so program can continue on.
-                }
-                if (k.Key == ConsoleKey.Q) {
-                    Environment.Exit(0); // exit the program
-                }
+                return runningTotal;
             }
         }
     }

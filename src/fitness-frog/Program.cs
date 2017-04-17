@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace fitness_frog {
     class Program {
         static void Main(string[] args) {
-            int userGoal = getGoal();
+            Double userGoal = getGoal();
             programLoop(userGoal); // call method to inquire for session goal
         }
 
-        static void programLoop(int userGoal) {
+        static void programLoop(Double userGoal) {
             ConsoleKeyInfo k;  // System key press object
-            int runningTotal = 0; // total minutes for the entire current session
+            Double runningTotal = 0.0; // total minutes for the entire current session
             bool run = true;
             // Main program Loop
             while (run) {
@@ -33,8 +33,7 @@ namespace fitness_frog {
                         continue;
                     }
                     if (k.Key == ConsoleKey.Q) {
-                        run = false;
-                        Environment.Exit(0); // exit the program
+                        closeApp();
                     }
                     if (k.Key != ConsoleKey.A && k.Key != ConsoleKey.Q) {
                         Console.Clear();
@@ -61,16 +60,19 @@ namespace fitness_frog {
             Console.WriteLine("Please indicate how many minutes you plan to exercise for this session?\n");
         }
 
-        static void showTotal(int userGoal, int runningTotal) {
+        static void showTotal(Double userGoal, Double runningTotal) {
             string strSupport = "";
-            if (runningTotal >= 100) {
+            if (runningTotal >= (.10 * userGoal)) {
                 strSupport = "\nVery good start, keep on going, you are doing great!";
-            } else if (runningTotal >= (userGoal)) {
+            } else if (runningTotal >= (.40 * userGoal)) {
                 strSupport = "\nWhew! The hard part is behind you now. Come on, you are doing great!";
-            } else if (runningTotal >= 300) {
+            } else if (runningTotal >= (.60 * userGoal)) {
                 strSupport = "\nExcellent work, you are over half way there. You got this!";
-            } else if (runningTotal >= 400) {
+            } else if (runningTotal >= (.80 * userGoal)) {
                 strSupport = "\nCome on you are so close to being done. You can do it!";
+            } else if (runningTotal >= (userGoal)) {
+                strSupport = "\nAlright, you did it! That was a great session.";
+                closeApp();
             }
             Console.Clear();
             // Display the running total to the screen
@@ -92,11 +94,11 @@ namespace fitness_frog {
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
 
-        static int addMin(int userGoal, string response, int runningTotal) {
-            int newMin = 0; // new set of minutes
+        static Double addMin(Double userGoal, string response, Double runningTotal) {
+            Double newMin = 0.0; // new set of minutes
             try {
-                Int32.TryParse(response, out newMin);  // Safely convert user's response to int
-                if (newMin <= 0) {
+                Double.TryParse(response, out newMin);  // Safely convert user's response to int
+                if (newMin <= 0.0) {
                     Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
                     Console.WriteLine("\n" + response + " is an invalid number. \nYou must type in a numeric value.");
                     Console.WriteLine();
@@ -119,13 +121,22 @@ namespace fitness_frog {
             }
         }
 
-        static int getGoal() {
-            int userGoal = 0;
+        static void closeApp() {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nProgram closing, press any key to quit...");
+            Console.Read();
+            Console.Read();
+            Environment.Exit(0); // exit the program
+        }
+
+        static Double getGoal() {
+            Double userGoal = 0;
             while (userGoal == 0) {
                 askGoal();
                 string reply = Console.ReadLine();
                 try {
-                    Int32.TryParse(reply, out userGoal);  // Safely convert user's response to int
+                    Double.TryParse(reply, out userGoal);  // Safely convert user's response to int
                     if (userGoal <= 0) {
                         Console.ForegroundColor = ConsoleColor.Red; // Indicate the error to the user
                         Console.WriteLine("\n" + reply + " is an invalid number. \nYou must type in a numeric value.");

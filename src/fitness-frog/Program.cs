@@ -62,17 +62,16 @@ namespace fitness_frog {
 
         static void showTotal(Double userGoal, Double runningTotal) {
             string strSupport = "";
-            if (runningTotal >= (.10 * userGoal)) {
+            if (runningTotal <= (.10 * userGoal)) {
                 strSupport = "\nVery good start, keep on going, you are doing great!";
-            } else if (runningTotal >= (.40 * userGoal)) {
+            } else if (runningTotal <= (.49 * userGoal) && runningTotal > (.10 * userGoal)) {
                 strSupport = "\nWhew! The hard part is behind you now. Come on, you are doing great!";
-            } else if (runningTotal >= (.60 * userGoal)) {
+            } else if (runningTotal <= (.60 * userGoal) && runningTotal >= (.50 * userGoal)) {
                 strSupport = "\nExcellent work, you are over half way there. You got this!";
-            } else if (runningTotal >= (.80 * userGoal)) {
+            } else if (runningTotal <= (.79 * userGoal) && runningTotal >= (.60 * userGoal)) {
+                strSupport = "\nAlright, you are so close you can taste it! Just a few more to go...";
+            } else if (runningTotal <= (.99 * userGoal) && runningTotal >= (.80 * userGoal)) {
                 strSupport = "\nCome on you are so close to being done. You can do it!";
-            } else if (runningTotal >= (userGoal)) {
-                strSupport = "\nAlright, you did it! That was a great session.";
-                closeApp();
             }
             Console.Clear();
             // Display the running total to the screen
@@ -81,6 +80,16 @@ namespace fitness_frog {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("You have been exercising a total of " + runningTotal + " out of " + userGoal + " minutes.");
             Console.WriteLine(strSupport);
+            if (runningTotal >= (userGoal)) {
+                strSupport = "\nAlright, you did it! That was a great session.";
+                Console.WriteLine(strSupport);
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\nPress any key to continue...");
+                Console.Read();
+                Console.Read();
+                closeApp();
+            }
             Console.ForegroundColor = ConsoleColor.White;
         }
 
